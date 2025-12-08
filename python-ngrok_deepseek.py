@@ -605,8 +605,7 @@ class NgrokClient:
             while self.running:
                 msg = await self._recv_packet(self.main_reader)
                 if not msg:
-                    self.last_ping = time.time()
-                    await asyncio.sleep(1)
+                    raise ConnectionError("服务端关闭了连接")
                 await self._process_message(msg)
         except (asyncio.IncompleteReadError, ConnectionError) as e:
             logger.debug(f"连接中断: {str(e)}")
